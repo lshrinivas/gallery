@@ -45,10 +45,11 @@ if ($_POST["logout"] == "true") {
 	
       </div>
       
-      <div id="info" class="ui-widget ui-widget-content ui-corner-all"">
+      <div id="info" class="ui-widget ui-widget-content ui-corner-all">
       </div>
       <script id="infoTemplate" type="text/html">
 	<p>Number of albums: {{numAlbums}}</p>
+	<div id="spaceusedbar"></div>
 	<p>Used: {{usedSpace}} MB of {{totalSpace}} MB</p>
       </script>
 

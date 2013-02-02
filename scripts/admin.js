@@ -164,8 +164,17 @@ function showAlbumSidebar() {
     	    var output = Mustache.render(template, albumSummaryRO);
 
     	    $("#info").html(output);
+
+	    // show graphic of used space
+	    var spaceUsedPercent = albumSummaryRO.usedSpace * 100 / albumSummaryRO.totalSpace;
+
+	    // To see how the progress bar looks, uncomment the following:
+	    //spaceUsedPercent = 34;
+
+	    $("#spaceusedbar").progressbar({ value: spaceUsedPercent });
 	} else {
 	    // show error
+	    dialog("Error!", "Couldn't fetch album summary");
 	}
     });
     

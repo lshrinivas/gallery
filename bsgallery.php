@@ -54,7 +54,7 @@ function albumSummary() {
     $ro->numAlbums = count($files);
 
     $ro->usedSpace = round(filesize_r('Pics') / 1000000); // space in MiB
-    $ro->totalSpace = round(disk_free_space("/") / 1000000); // space in GiB
+    $ro->totalSpace = $ro->usedSpace + round(disk_free_space("/") / 1000000); // space in GiB
 
     return $ro;
 }
