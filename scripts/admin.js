@@ -3,7 +3,7 @@ $(function() {
     init();
 
     // Initially, start with all albums view
-    showAlbums();
+    albumView();
 });
 
 function init() {
@@ -115,6 +115,10 @@ function dialog(title, bodyText) {
 
 /////////////// Album View Functions //////////////
 
+function albumView() {
+    showAlbums();
+    showAlbumSidebar();
+}
 
 function showAlbums() {
 
@@ -139,8 +143,6 @@ function showAlbums() {
 	    dialog("Error!", "Couldn't fetch albums");
 	}
     });
-
-    showAlbumSidebar();
 }
 
 function createAlbum(a_name) {

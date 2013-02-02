@@ -8,3 +8,10 @@ input.ui-button
 {
     padding: 0px 11px 0px 11px;
 }
+
+#container div img {
+    height: 100%;
+    display: block;
+    margin: auto;
+}
+
