@@ -2,10 +2,11 @@
   <head>
     <meta charset="utf-8">
     <title>Pictures</title>
-    <link href="jqui/css/ui-darkness/jquery-ui-1.9.1.custom.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
-    <script src="jqui/js/jquery-1.8.2.js"></script>
-    <script src="jqui/js/jquery-ui-1.9.1.custom.js"></script>
+    <link href="jqui/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+    <link href="css/slidesoverride.css" rel="stylesheet">
+    <script src="jqui/jquery-1.9.0.js"></script>
+    <script src="jqui/ui/jquery-ui.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/jquery.cycle.all.js"></script>
   </head>
@@ -56,7 +57,7 @@
       </div>
     </div>
     <div id="tb-container" class="ui-widget-overlay ui-corner-all">
-      <span id="toolbar" class="ui-widget-header ui-corner-all">
+      <span id="controltoolbar" class="ui-widget-header ui-corner-all">
         <button id="prev">Previous</button>
         <button id="play">Pause</button>
         <button id="next">Next</button>

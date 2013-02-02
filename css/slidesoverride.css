@@ -1,0 +1,10 @@
+button.ui-button .ui-button-text
+{
+    padding: 0px 11px 0px 11px;
+    font-size: 14px;
+}
+
+input.ui-button
+{
+    padding: 0px 11px 0px 11px;
+}

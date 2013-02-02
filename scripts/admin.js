@@ -169,7 +169,7 @@ function showAlbumSidebar() {
 	    var spaceUsedPercent = albumSummaryRO.usedSpace * 100 / albumSummaryRO.totalSpace;
 
 	    // To see how the progress bar looks, uncomment the following:
-	    //spaceUsedPercent = 34;
+	    spaceUsedPercent = 34;
 
 	    $("#spaceusedbar").progressbar({ value: spaceUsedPercent });
 	} else {

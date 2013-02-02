@@ -1,5 +1,5 @@
 body {
-    background-color: black;
+    background-color: rgb(20,20,20);
 }
 
 #thumbs {
@@ -22,26 +22,8 @@ body {
     height: 100%;
 }
 
-button.ui-button .ui-button-text
-{
-    padding: 0px 11px 0px 11px !important;
-    font-size: .72em !important;
-}
-
-input.ui-button
-{
-    padding: 0px 11px 0px 11px !important;
-    /* font-size: 1em !important; */
-}
-
 #browse {
     z-index: 100;
-}
-
-#container div img {
-    height: 100%;
-    display: block;
-    margin: auto;
 }
 
 .album-cover {
@@ -49,7 +31,7 @@ input.ui-button
     width: 200px;
     height: 200px;
     float: left;
-    margin: 3px;
+    margin: 9.4px;
     text-align: center;
 }
 
@@ -86,7 +68,32 @@ img.thumb {
     filter:alpha(opacity=100); /* For IE8 and earlier */
 }
 
+#progress {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    display: none;
+}
+
+div.panel {
+    width: 70%;
+}
+
 #toolbar {
+    width: 30%;
+    margin: 9px;
+}
+
+#info {
+    position: absolute;
+    width: 30%;
+    right: 0px;
+    /* color: white; */
+    border: 1px solid rgb(102, 102, 102);
+    padding: 10px;
+}
+
+#controltoolbar {
     padding: 10px 4px;
 }
 

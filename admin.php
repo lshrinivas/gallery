@@ -15,13 +15,13 @@ if ($_POST["logout"] == "true") {
   <head>
     <meta charset="utf-8">
     <title>Memories...</title>
-    <link href="css/admin.css" rel="stylesheet">
-    <link href="jqui/css/ui-darkness/jquery-ui-1.9.1.custom.css" rel="stylesheet">
-    <script src="jqui/js/jquery-1.8.2.js"></script>
-    <script src="jqui/js/jquery-ui-1.9.1.custom.js"></script>
+    <link href="css/main.css" rel="stylesheet">
+    <link href="jqui/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
+    <link href="css/overrides.css" rel="stylesheet">
+    <script src="jqui/jquery-1.9.0.js"></script>
+    <script src="jqui/ui/jquery-ui.js"></script>
     <script src="scripts/mustache.js"></script>
     <script src="scripts/admin.js"></script>
-
   </head>
   <body>
     <div id="container">

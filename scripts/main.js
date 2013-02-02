@@ -85,6 +85,12 @@ function scaleImage() {
 
 function toggleThumbs() {
     $("#thumbs").toggle("slide", "slow");
+    var curLabel = $("#browse").text();
+    if (curLabel == "Browse")
+	$("#browse").text("Close");
+    else
+	$("#browse").text("Browse");
+    $("#browse").css({ "padding": "0px 11px 0px 11px", "font-size": "14px"});
     return false;
 }
 
