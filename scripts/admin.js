@@ -16,8 +16,8 @@ function init() {
 	buttons: {
 	    "Create": function() {
 		var bValid = true;
-		var name = $( "#name" );
-		name.removeClass( "ui-state-error" );
+		var name = $("#name");
+		name.removeClass("ui-state-error");
 		bValid = bValid && checkLength( name, "username", 1, 100 );
 		if (bValid) {
 		    createAlbum(name.val());
@@ -33,6 +33,22 @@ function init() {
 	}
     });
 
+    // Initialize upload dialog
+    $( "#upload-dialog" ).dialog({
+	autoOpen: false,
+	height: 600,
+	width: 600,
+	modal: true,
+	buttons: {
+	    "Upload": function() {
+		// todo
+	    },
+	    Cancel: function() {
+		$(this).dialog("close");
+	    }
+	}
+    });
+
     // Init toolbar buttons
     $( "#logout" )
         .button()
@@ -45,14 +61,17 @@ function init() {
     $("#newalbum")
 	.button()
 	.click(function() {
-	    $( "#newalbum-dialog" ).dialog( "open" );
+	    $("#newalbum-dialog").dialog("open");
 	});
 
     $("#upload")
 	.button()
 	.click(function() {
-	    // todo
+	    $("#upload-dialog").dialog("open");
 	});
+
+    $("#addfiles")
+	.button();
 
     // Position progress indicator animation
     $("#progress").position({
@@ -294,3 +313,13 @@ function publicLink(a_name) {
     });
 }
 
+/////////////// Upload View Functions //////////////
+
+function uploadView(albumName) {
+    $("#allAlbumsPanel").hide();
+    $("#newalbum").hide();
+
+    $("#upload").show();
+    showPhotos(albumName);
+    showPhotosSidebar(albumName);
+}

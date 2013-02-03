@@ -75,6 +75,8 @@ if ($_POST["logout"] == "true") {
 	{{/photos}}
       </script>
 
+      <div id="uploadPanel" class="panel">
+      </div>
       
       <div id="newalbum-dialog" title="Create new album">
 	<p class="validateTips">All form fields are required.</p>
@@ -82,6 +84,14 @@ if ($_POST["logout"] == "true") {
 	    <label for="name">Name</label>
 	    <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
 	</form>
+      </div>
+
+      <div id="upload-dialog" title="Upload Photos">
+	<input type="file" id="addfiles" />
+	<div class="dashed-box ui-corner-all">
+	  Drag and drop photos here
+	</div>
+	
       </div>
 
       <div id="alerts" title="">

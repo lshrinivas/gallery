@@ -40,3 +40,13 @@ div.panel {
 #upload {
     display: none;
 }
+
+.dashed-box {
+    border: 5px dashed rgb(102, 102, 102);
+    width: 96%;
+    /* height: 90%; */
+    margin: 5px;
+    text-align: center;
+    padding-top: 33%;
+    padding-bottom: 33%;
+}
