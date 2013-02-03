@@ -33,3 +33,10 @@ div.panel {
     margin: 9px;
 }
 
+#newalbum {
+    display: none;
+}
+
+#upload {
+    display: none;
+}

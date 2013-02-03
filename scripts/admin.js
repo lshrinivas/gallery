@@ -48,6 +48,12 @@ function init() {
 	    $( "#newalbum-dialog" ).dialog( "open" );
 	});
 
+    $("#upload")
+	.button()
+	.click(function() {
+	    // todo
+	});
+
     // Position progress indicator animation
     $("#progress").position({
     	my: "center middle",
@@ -126,7 +132,9 @@ function sessionExpired() {
 
 function albumView() {
     $("#oneAlbumPanel").hide();
+    $("#upload").hide();
 
+    $("#newalbum").show();
     showAlbums();
     showAlbumSidebar();
 }
@@ -209,7 +217,9 @@ function showAlbumSidebar() {
 
 function photoView(albumName) {
     $("#allAlbumsPanel").hide();
+    $("#newalbum").hide();
 
+    $("#upload").show();
     showPhotos(albumName);
     showPhotosSidebar(albumName);
 }

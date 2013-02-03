@@ -28,6 +28,7 @@ if ($_POST["logout"] == "true") {
     <div id="container">
       <div id="toolbar">
 	<button id="newalbum">New Album</button>
+	<button id="upload">Upload Photos</button>
 	<button id="logout">Logout</button>
       </div>
 
@@ -65,7 +66,7 @@ if ($_POST["logout"] == "true") {
       </div>
       <script id="photoTemplate" type="text/html">
 	<div id="breadcrumb" class="ui-widget">
-	  <span id="albumview">Home</span> &gt; {{albumName}}
+	  <span id="albumview">Home</span> &gt; <span id="albumname">{{albumName}}</span>
 	</div>
 	{{#photos}}
 	<div class="thumb">
