@@ -3,6 +3,7 @@
     <meta charset="utf-8">
     <title>Pictures</title>
     <link href="css/main.css" rel="stylesheet">
+    <link href="css/slides.css" rel="stylesheet">
     <link href="jqui/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
     <link href="css/slidesoverride.css" rel="stylesheet">
     <script src="jqui/jquery-1.9.0.js"></script>

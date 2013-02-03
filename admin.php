@@ -16,6 +16,7 @@ if ($_POST["logout"] == "true") {
     <meta charset="utf-8">
     <title>Memories...</title>
     <link href="css/main.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
     <link href="jqui/themes/ui-darkness/jquery-ui.css" rel="stylesheet">
     <link href="css/overrides.css" rel="stylesheet">
     <script src="jqui/jquery-1.9.0.js"></script>

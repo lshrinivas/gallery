@@ -1,0 +1,35 @@
+#breadcrumb {
+    color: rgb(255, 255, 255);
+}
+
+#albumview {
+    cursor: pointer;
+}
+
+#info {
+    position: absolute;
+    width: 28%;
+    right: 0px;
+    /* color: white; */
+    border: 1px solid rgb(102, 102, 102);
+    padding: 10px;
+    margin: 9.4px;
+}
+
+#progress {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    display: none;
+}
+
+div.panel {
+    width: 70%;
+    display: inline-block;
+}
+
+#toolbar {
+    width: 30%;
+    margin: 9px;
+}
+
