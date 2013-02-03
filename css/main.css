@@ -56,7 +56,9 @@ div.thumb {
     width: 150px;
     height: 150px;
     display: inline-block;
-    margin: 5px;
+    margin: 9.4px;
+    line-height: 150px;
+    text-align: center;
 }
 
 img.thumb {
@@ -66,6 +68,7 @@ img.thumb {
     display: inline-block;
     opacity:1.0;
     filter:alpha(opacity=100); /* For IE8 and earlier */
+    border: 1px solid rgb(102, 102, 102);
 }
 
 #progress {
@@ -77,6 +80,7 @@ img.thumb {
 
 div.panel {
     width: 70%;
+    display: inline-block;
 }
 
 #toolbar {
@@ -86,11 +90,12 @@ div.panel {
 
 #info {
     position: absolute;
-    width: 30%;
+    width: 28%;
     right: 0px;
     /* color: white; */
     border: 1px solid rgb(102, 102, 102);
     padding: 10px;
+    margin: 9.4px;
 }
 
 #controltoolbar {
@@ -102,4 +107,12 @@ div.panel {
     z-index: 2000;
     width: 150px;
     height: 30px;
+}
+
+#breadcrumb {
+    color: rgb(255, 255, 255);
+}
+
+#albumview {
+    cursor: pointer;
 }

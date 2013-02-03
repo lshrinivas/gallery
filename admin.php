@@ -30,6 +30,25 @@ if ($_POST["logout"] == "true") {
 	<button id="logout">Logout</button>
       </div>
 
+      <div id="info" class="ui-widget ui-widget-content ui-corner-all">
+      </div>
+      <!-- Template for all albums summary -->
+      <script id="infoTemplate" type="text/html">
+	<p>Number of albums: {{numAlbums}}</p>
+	<div id="spaceusedbar"></div>
+	<p>Used: {{usedSpace}} MB of {{totalSpace}} MB</p>
+      </script>
+      <!-- Template for single album summary -->
+      <script id="oneAlbumTemplate" type="text/html">
+	<p>Album public link:</p>
+	<div class="ui-state-highlight ui-corner-all" style="padding: 2px;">
+	  {{albumPublicUrl}}
+	</div>
+	<p>Number of photos: {{numPics}}</p>
+	<p>Used space: {{usedSpace}} MB</p>
+      </script>
+
+
       <div id="allAlbumsPanel" class="panel">
       </div>
       <script id="albumTemplate" type="text/html">
@@ -42,17 +61,19 @@ if ($_POST["logout"] == "true") {
       </script>
 
       <div id="oneAlbumPanel" class="panel">
-	
       </div>
-      
-      <div id="info" class="ui-widget ui-widget-content ui-corner-all">
-      </div>
-      <script id="infoTemplate" type="text/html">
-	<p>Number of albums: {{numAlbums}}</p>
-	<div id="spaceusedbar"></div>
-	<p>Used: {{usedSpace}} MB of {{totalSpace}} MB</p>
+      <script id="photoTemplate" type="text/html">
+	<div id="breadcrumb" class="ui-widget">
+	  <span id="albumview">Home</span> &gt; {{albumName}}
+	</div>
+	{{#photos}}
+	<div class="thumb">
+	  <img class="thumb" src="{{{imageUrl}}}" title="{{imageInfo}}"/>
+	</div>
+	{{/photos}}
       </script>
 
+      
       <div id="newalbum-dialog" title="Create new album">
 	<p class="validateTips">All form fields are required.</p>
 	<form>

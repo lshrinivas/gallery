@@ -55,6 +55,9 @@ function init() {
     	of: "#container"
     });
 
+    // Initialize tooltips
+    $(document).tooltip();
+
 }
 
 //////////// Utility Functions ///////////////
@@ -92,19 +95,18 @@ function updateTips( t ) {
     }, 500 );
 }
 
-function dialog(title, bodyText) {
-    var modelObj = { body: bodyText };
+function dialog(titleText, bodyText) {
     var template = $("#alertTemplate").html();
 
-    var output = Mustache.render(template, modelObj);
+    var output = Mustache.render(template, { body: bodyText });
 
     $("#alerts").html(output);
-    $("#alerts").attr("title", title);
 
     $("#alerts").dialog({
 	height: 300,
 	width: 350,
 	modal: true,
+	title: titleText,
 	buttons: {
 	    Ok: function() {
 		$( this ).dialog( "close" );
@@ -113,9 +115,18 @@ function dialog(title, bodyText) {
     });
 }
 
+function sessionExpired() {
+    dialog("Session Expired", "Your session has expired. Please click Ok to login again");
+    $( "#alerts" ).bind( "dialogclose", function() {
+	$(location).attr('href',"index.html");
+    });
+}
+
 /////////////// Album View Functions //////////////
 
 function albumView() {
+    $("#oneAlbumPanel").hide();
+
     showAlbums();
     showAlbumSidebar();
 }
@@ -135,12 +146,16 @@ function showAlbums() {
 	    $(".album-cover")
 		.click(function() {
 		    var albumName = $(this).children("p:first").html();
-		    showAlbumPics(albumName);
+		    photoView(albumName);
 		});
 
 	} else {
-	    // show error
-	    dialog("Error!", "Couldn't fetch albums");
+	    // handle session expired
+	    if (getAlbumsRO.retcode == 1) 
+		sessionExpired();
+	    else
+		// show error
+		dialog("Error!", "Couldn't fetch albums");
 	}
     });
 }
@@ -152,8 +167,12 @@ function createAlbum(a_name) {
 	if (createAlbumRO.success) {
 	    showAlbums();
 	} else {
-	    // show error
-	    dialog("Error!", "Couldn't create album");
+	    // handle session expired
+	    if (createAlbumRO.retcode == 1) 
+		sessionExpired();
+	    else
+		// show error
+		dialog("Error!", "Couldn't create album");
 	}
     });
 }
@@ -175,8 +194,12 @@ function showAlbumSidebar() {
 
 	    $("#spaceusedbar").progressbar({ value: spaceUsedPercent });
 	} else {
-	    // show error
-	    dialog("Error!", "Couldn't fetch album summary");
+	    // handle session expired
+	    if (albumSummaryRO.retcode == 1) 
+		sessionExpired();
+	    else
+		// show error
+		dialog("Error!", "Couldn't fetch album summary");
 	}
     });
     
@@ -184,8 +207,61 @@ function showAlbumSidebar() {
 
 /////////////// Photo View Functions //////////////
 
-function showAlbumPics(albumName) {
-    publicLink(albumName);
+function photoView(albumName) {
+    $("#allAlbumsPanel").hide();
+
+    showPhotos(albumName);
+    showPhotosSidebar(albumName);
+}
+
+function showPhotos(albumName) {
+
+    performRPC("getPhotos", { name: albumName }, function(getPhotosRO) {
+	if (getPhotosRO.success) {
+    	    var template = $("#photoTemplate").html();
+    	    var output = Mustache.render(template, getPhotosRO);
+
+    	    $("#oneAlbumPanel").html(output);
+
+	    // Set up breadcrumbs Home link
+	    $("#albumview").click(albumView);
+
+    	    $("#oneAlbumPanel").show();
+
+
+	} else {
+	    // handle session expired
+	    if (getPhotosRO.retcode == 1) 
+		sessionExpired();
+	    else
+		// show error
+		dialog("Error!", "Couldn't fetch photos in album");
+	}
+    });
+}
+
+function showPhotosSidebar(albumName) {
+
+    performRPC("photoSummary", { name: albumName }, function(photoSummaryRO) {
+	if (photoSummaryRO.success) {
+
+	    var cur_url = window.location.href;
+	    photoSummaryRO.albumPublicUrl = cur_url.replace("admin.php", photoSummaryRO.albumPublicUrl);
+
+    	    var template = $("#oneAlbumTemplate").html();
+    	    var output = Mustache.render(template, photoSummaryRO);
+
+    	    $("#info").html(output);
+	} else {
+	    // handle session expired
+	    if (photoSummaryRO.retcode == 1) 
+		sessionExpired();
+	    else
+		// show error
+		dialog("Error!", "Couldn't fetch photos in album");
+	}
+    });
+
 }
 
 function publicLink(a_name) {
@@ -198,7 +274,12 @@ function publicLink(a_name) {
 	    
 	    dialog("Public Link", final_url);
 	} else { 
-	    // show error
+	    // handle session expired
+	    if (publicLinkRO.retcode == 1) 
+		sessionExpired();
+	    else
+		// show error
+		dialog("Error!", "Couldn't get public link for album");
 	}
     });
 }

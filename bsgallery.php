@@ -68,8 +68,6 @@ function createAlbum($inputArr) {
     $ro = new BaseRO();
     $aname = $inputArr["name"];
 
-    error_log("Album name = " . $aname);
-
     $oldumask = umask(0); 
     $ro->success = mkdir("Pics/$aname", 0777);
     if (!($ro->success)) {
@@ -79,6 +77,55 @@ function createAlbum($inputArr) {
 
     return $ro;
 }
+
+
+/* 
+   Input: Array with property "name"
+   Output: GetPhotosRO object
+*/
+function getPhotos($inputArr) {
+
+    $ro = new GetPhotosRO();
+    $album = $inputArr["name"];
+    $ro->albumName = $album;
+
+    $picPath = "Pics/$album/*.[jJ][pP][gG]";
+    $files = glob($picPath);
+    $numfiles = count($files);	
+
+    for ($i=0; $i < $numfiles; $i++)
+    {
+        $photoUrl = $files[$i];
+        $info = basename($photoUrl);
+        $onePhoto = new PhotoInfo($photoUrl, $info);
+        array_push($ro->photos, $onePhoto);
+    }
+
+    error_log(print_r($ro, TRUE));
+
+    return $ro;
+}
+
+/* 
+   Input: Array with property "name"
+   Output: AlbumSummaryRO object
+*/
+function photoSummary($inputArr) {
+    $ro = new PhotoSummaryRO();
+    $album = $inputArr["name"];
+
+    $picPath = "Pics/$album/*.[jJ][pP][gG]";
+    $files = glob($picPath);
+    $ro->numPics = count($files);	
+
+    $ro->usedSpace = round(filesize_r("Pics/$album") / 1000000); // space in MiB
+
+    $plinkRO = publicLink($inputArr);
+    $ro->albumPublicUrl = $plinkRO->url;
+
+    return $ro;
+}
+
 
 /*
   Input: Array with property "name"
@@ -101,14 +148,20 @@ function publicLink($inputArr) {
 ///////// Dispatcher ///////
 function dispatch($method, $data) {
 
-    // Use a dispatch table instead of eval to prevent code-injection attacks
-    $validFuncs = array("getAlbums", 
-                        "createAlbum", 
+    // Use a dispatch table of valid funcs to prevent code-injection attacks
+    $validFuncs = array("getAlbums",
+                        "createAlbum",
                         "publicLink",
-                        "albumSummary");
+                        "albumSummary",
+                        "getPhotos",
+                        "photoSummary");
 
     if (in_array($method, $validFuncs)) {
         return call_user_func($method, $data);
+    } else {
+        $ro = new BaseRO(); 
+        $ro->success = false;
+        $ro->retcode = 3;
     }
 }
 
@@ -130,7 +183,7 @@ function filesize_r($path){
 $method = $_POST["method"];
 $data = $_POST["args"];
 
-error_log(print_r($data, TRUE));
+// error_log(print_r($data, TRUE));
 
 // Dispath the method
 // $ro = dispatch($method, $data);
