@@ -2,7 +2,7 @@
     color: rgb(255, 255, 255);
 }
 
-#albumview {
+.link {
     cursor: pointer;
 }
 
@@ -44,9 +44,28 @@ div.panel {
 .dashed-box {
     border: 5px dashed rgb(102, 102, 102);
     width: 96%;
-    /* height: 90%; */
     margin: 5px;
     text-align: center;
-    padding-top: 33%;
-    padding-bottom: 33%;
+}
+
+#dropbox-label {
+    font-size: 30px;
+    font-weigth: bold;
+    line-height: 300px;
+    color: rgb(102, 102, 102);
+}
+
+table {
+    color: white;
+}
+
+#photoContainer .ui-selecting img {
+    -moz-box-shadow: 0px 0px 10px 5px #fff;
+    -webkit-box-shadow: 0px 0px 10px 5px #fff;
+    box-shadow: 0px 0px 10px 5px #fff;
+}
+#photoContainer .ui-selected img {
+    -moz-box-shadow: 0px 0px 10px 5px #fff;
+    -webkit-box-shadow: 0px 0px 10px 5px #fff;
+    box-shadow: 0px 0px 10px 5px #fff;
 }

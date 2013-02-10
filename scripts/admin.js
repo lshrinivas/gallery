@@ -33,20 +33,10 @@ function init() {
 	}
     });
 
-    // Initialize upload dialog
-    $( "#upload-dialog" ).dialog({
-	autoOpen: false,
-	height: 600,
-	width: 600,
-	modal: true,
-	buttons: {
-	    "Upload": function() {
-		// todo
-	    },
-	    Cancel: function() {
-		$(this).dialog("close");
-	    }
-	}
+    // Initialize the jQuery File Upload widget:
+    $('#fileupload').fileupload({
+        url: 'picuploader.php',
+	dropZone: $("#dropbox")
     });
 
     // Init toolbar buttons
@@ -67,11 +57,8 @@ function init() {
     $("#upload")
 	.button()
 	.click(function() {
-	    $("#upload-dialog").dialog("open");
+	    uploadView($("#albumname").html());
 	});
-
-    $("#addfiles")
-	.button();
 
     // Position progress indicator animation
     $("#progress").position({
@@ -150,7 +137,7 @@ function sessionExpired() {
 /////////////// Album View Functions //////////////
 
 function albumView() {
-    $("#oneAlbumPanel").hide();
+    $("div.panel").hide();
     $("#upload").hide();
 
     $("#newalbum").show();
@@ -216,9 +203,6 @@ function showAlbumSidebar() {
 	    // show graphic of used space
 	    var spaceUsedPercent = albumSummaryRO.usedSpace * 100 / albumSummaryRO.totalSpace;
 
-	    // To see how the progress bar looks, uncomment the following:
-	    spaceUsedPercent = 34;
-
 	    $("#spaceusedbar").progressbar({ value: spaceUsedPercent });
 	} else {
 	    // handle session expired
@@ -235,7 +219,7 @@ function showAlbumSidebar() {
 /////////////// Photo View Functions //////////////
 
 function photoView(albumName) {
-    $("#allAlbumsPanel").hide();
+    $("div.panel").hide();
     $("#newalbum").hide();
 
     $("#upload").show();
@@ -256,7 +240,16 @@ function showPhotos(albumName) {
 	    $("#albumview").click(albumView);
 
     	    $("#oneAlbumPanel").show();
-
+	    $("#photoContainer").selectable({
+		stop: function() { 
+		    // show delete button if there are any selected
+		    // photos, hide otherwise
+		    if ($(".ui-selected").length > 0)
+			$("#delete-photos").show();
+		    else
+			$("#delete-photos").hide();
+		}
+	    });
 
 	} else {
 	    // handle session expired
@@ -281,6 +274,12 @@ function showPhotosSidebar(albumName) {
     	    var output = Mustache.render(template, photoSummaryRO);
 
     	    $("#info").html(output);
+
+	    // Init delete button (hidden initially)
+	    $("#delete-photos")
+		.button()
+		.click(deletePhotos)
+		.hide();
 	} else {
 	    // handle session expired
 	    if (photoSummaryRO.retcode == 1) 
@@ -313,13 +312,54 @@ function publicLink(a_name) {
     });
 }
 
+function deletePhotos() {
+    var album = $("#albumname").html();
+
+    var picURLs = [];
+    $("div.ui-selected").find("img").each(function() {
+	picURLs.push($(this).attr("src"));
+    });
+
+    $.post("picuploader.php", 
+	   { _method : "DELETE", albumName: album, picurls: picURLs }, 
+	   function() {
+	       photoView(album);
+	   });
+    
+}
+
 /////////////// Upload View Functions //////////////
 
 function uploadView(albumName) {
-    $("#allAlbumsPanel").hide();
+    $("div.panel").hide();
     $("#newalbum").hide();
 
+    // set the album name on the upload widget
+    $('#fileupload').fileupload(
+    	'option',
+    	'formData',
+    	[ { name: 'albumName', value: albumName } ]
+    );
+
     $("#upload").show();
-    showPhotos(albumName);
-    showPhotosSidebar(albumName);
+    showUpload(albumName);
+    showUploadSidebar(albumName);
+}
+
+function showUpload(albumName) {
+
+    var template = $("#uploadTemplate").html();
+    var output = Mustache.render(template, { albumName: albumName });
+
+    $("#bc-container").html(output);
+
+    // Set up breadcrumbs Home link
+    $("#albumview2").click(albumView);
+    $("#albumname2").click(function() { photoView(albumName); });
+
+    $("#uploadPanel").show();
+}
+
+function showUploadSidebar(albumName) {
+
 }
