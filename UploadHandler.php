@@ -264,6 +264,7 @@ class UploadHandler
     }
 
     protected function create_scaled_image($file_name, $version, $options) {
+        debug_log("Entered create_scaled_image");
         $file_path = $this->get_upload_path($file_name);
         if (!empty($version)) {
             $version_dir = $this->get_upload_path(null, $version);
@@ -274,6 +275,7 @@ class UploadHandler
         } else {
             $new_file_path = $file_path;
         }
+        debug_log("New file path: $new_file_path");
         list($img_width, $img_height) = getimagesize($file_path);
         if (!$img_width || !$img_height) {
             return false;
@@ -282,16 +284,18 @@ class UploadHandler
             $options['max_width'] / $img_width,
             $options['max_height'] / $img_height
         );
+        debug_log("Scale = $scale");
         if ($scale >= 1) {
             if ($file_path !== $new_file_path) {
                 return copy($file_path, $new_file_path);
             }
             return true;
         }
+        debug_log("About to call imagecreatetruecolor");
         $new_width = $img_width * $scale;
         $new_height = $img_height * $scale;
         $new_img = imagecreatetruecolor($new_width, $new_height);
-
+        debug_log("After call to imagecreatetruecolor");
         switch (strtolower(substr(strrchr($file_name, '.'), 1))) {
             case 'jpg':
             case 'jpeg':
@@ -318,7 +322,10 @@ class UploadHandler
             default:
                 $src_img = null;
         }
-
+        debug_log("About to call imagecopyresampled");
+        if ($src_img) {
+            debug_log("src_img is not null");
+        }
         $success = $src_img && imagecopyresampled(
             $new_img,
             $src_img,
@@ -332,7 +339,7 @@ class UploadHandler
         // Free up memory (imagedestroy does not delete files):
         imagedestroy($src_img);
         imagedestroy($new_img);
-
+        debug_log("Exiting create_scaled_image");
         return $success;
     }
 
