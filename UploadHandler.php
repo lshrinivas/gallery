@@ -34,6 +34,8 @@ class UploadHandler
         'min_height' => 'Image requires a minimum height'
     );
 
+    protected $log_file;
+
     function __construct($options = null, $initialize = true) {
         $this->options = array(
             'script_url' => $this->get_full_url().'/',
@@ -110,6 +112,7 @@ class UploadHandler
         if ($initialize) {
             $this->initialize();
         }
+        $this->log_file = fopen("./upload.log", "a");
     }
 
     protected function initialize() {
@@ -508,12 +511,14 @@ class UploadHandler
     protected function handle_file_upload($uploaded_file, $name, $size, $type, $error,
             $index = null, $content_range = null) {
 
+        debug_log("Entered file upload handler");
         $file = new stdClass();
         $file->name = $this->get_file_name($name, $type, $index, $content_range);
         $file->size = $this->fix_integer_overflow(intval($size));
         $file->type = $type;
 
         if ($this->validate($uploaded_file, $file, $error, $index)) {
+            debug_log("File validated");
             $this->handle_form_data($file, $index);
             $upload_dir = $this->get_upload_path();
             if (!is_dir($upload_dir)) {
@@ -541,6 +546,7 @@ class UploadHandler
                     $append_file ? FILE_APPEND : 0
                 );
             }
+            debug_log("Moved/wrote file");
 
             $file_size = $this->get_file_size($file_path, $append_file);
             if ($file_size === $file->size) {
@@ -549,7 +555,9 @@ class UploadHandler
                 }
                 $file->url = $this->get_download_url($file->name);
                 foreach($this->options['image_versions'] as $version => $options) {
+                    debug_log("About to scale image");
                     if ($this->create_scaled_image($file->name, $version, $options)) {
+                        debug_log("create_scaled_image returned true");
                         if (!empty($version)) {
                             $file->{$version.'_url'} = $this->get_download_url(
                                 $file->name,
@@ -567,6 +575,7 @@ class UploadHandler
             $file->size = $file_size;
             $this->set_file_delete_properties($file);
         }
+        debug_log("Exit file upload handler");
         return $file;
     }
 
@@ -602,8 +611,13 @@ class UploadHandler
             }
             $this->body($json);
         }
-        error_log($json);
+        //debug_log($json);
+        fclose($this->log_file);
         return $content;
+    }
+
+    protected function debug_log($line) {
+        fwrite($this->log_file, $line . "\n");   
     }
 
     protected function get_version_param() {
