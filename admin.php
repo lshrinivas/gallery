@@ -22,9 +22,8 @@ if (isset($_POST["logout"]) && $_POST["logout"] == "true") {
     <script src="jqui/jquery-1.9.0.js"></script>
     <script src="jqui/ui/jquery-ui.js"></script>
     <script src="scripts/mustache.js"></script>
+    <script src="scripts/fileuploader.js"></script>
     <script src="scripts/admin.js"></script>
-    <!-- File upload plugin stuff -->
-    <link href="uploader/css/jquery.fileupload-ui.css" rel="stylesheet">
   </head>
   <body>
     <div id="container">
@@ -85,51 +84,9 @@ if (isset($_POST["logout"]) && $_POST["logout"] == "true") {
       <div id="uploadPanel" class="panel">
 	<div id="bc-container">
 	</div>
+  	<input id="upload-files" type="file" multiple />
+	<button id="do-upload">Upload</button>
 	<br/>
-	<!-- The file upload form used as target for the file upload widget -->
-	<form id="fileupload" action="" method="POST" enctype="multipart/form-data">
-          <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-          <div class="row fileupload-buttonbar">
-            <div class="span7">
-              <!-- The fileinput-button span is used to style the file input field as button -->
-              <span class="btn btn-success fileinput-button">
-                <i class="icon-plus icon-white"></i>
-                <span>Add files...</span>
-                <input type="file" name="files[]" multiple>
-              </span>
-              <button type="submit" class="btn btn-primary start">
-                <i class="icon-upload icon-white"></i>
-                <span>Start upload</span>
-              </button>
-              <button type="reset" class="btn btn-warning cancel">
-                <i class="icon-ban-circle icon-white"></i>
-                <span>Remove all</span>
-              </button>
-              <button type="button" class="btn btn-danger delete">
-                <i class="icon-trash icon-white"></i>
-                <span>Delete</span>
-              </button>
-              <input type="checkbox" class="toggle">
-            </div>
-            <!-- The global progress information -->
-            <div class="span5 fileupload-progress fade">
-              <!-- The global progress bar -->
-              <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                <div class="bar" style="width:0%;"></div>
-              </div>
-              <!-- The extended global progress information -->
-              <div class="progress-extended">&nbsp;</div>
-            </div>
-          </div>
-          <!-- The loading indicator is shown during file processing -->
-          <div class="fileupload-loading"></div>
-          <br>
-          <!-- The table listing the files available for upload/download -->
-          <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
-	</form>
-	<div id="dropbox" class="dashed-box ui-corner-all ui-widget">
-	  <p id="dropbox-label">Drag and drop photos here</p>
-	</div>
 	
       </div>
 
@@ -222,16 +179,6 @@ if (isset($_POST["logout"]) && $_POST["logout"] == "true") {
       </tr>
       {% } %}
     </script>
-    <!-- The Templates plugin is included to render the upload/download listings -->
-    <script src="http://blueimp.github.com/JavaScript-Templates/tmpl.min.js"></script>
-    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-    <script src="http://blueimp.github.com/JavaScript-Load-Image/load-image.min.js"></script>
-    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-    <script src="http://blueimp.github.com/JavaScript-Canvas-to-Blob/canvas-to-blob.min.js"></script>
-    <script src="uploader/js/jquery.fileupload.js"></script>
-    <script src="uploader/js/jquery.fileupload-fp.js"></script>
-    <script src="uploader/js/jquery.fileupload-ui.js"></script>
-    <script src="uploader/js/jquery.fileupload-jui.js"></script>
 
 
   </body>

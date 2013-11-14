@@ -33,8 +33,8 @@ function init() {
 	}
     });
 
-    // Initialize the jQuery File Upload widget:
-    $('#fileupload').fileupload({
+    // Initialize the File Upload widget:
+    var fileUploader = new FileUploader({
         url: 'picuploader.php',
 	dropZone: $("#dropbox")
     });
@@ -66,6 +66,13 @@ function init() {
     	at: "center middle",
     	of: "#container"
     });
+
+    $("#do-upload")
+	.button()
+	.click(function() {
+	    var filesToUpload = document.getElementById("upload-files").files;
+	    fileUploader.upload(filesToUpload);
+	});
 
     // Initialize tooltips
     $(document).tooltip();
@@ -334,12 +341,6 @@ function uploadView(albumName) {
     $("div.panel").hide();
     $("#newalbum").hide();
 
-    // set the album name on the upload widget
-    $('#fileupload').fileupload(
-    	'option',
-    	'formData',
-    	[ { name: 'albumName', value: albumName } ]
-    );
 
     $("#upload").show();
     showUpload(albumName);
