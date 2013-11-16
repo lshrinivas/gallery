@@ -36,7 +36,10 @@ function init() {
     // Initialize the File Upload widget:
     var fileUploader = new FileUploader({
         url: 'picuploader.php',
-        dropZone: $("#dropbox")
+        dropZone: $("#dropbox"),
+        startResize: onStartResize,
+        endResize: onEndResize,
+        uploadProgress: onUploadProgress
     });
 
     // Init toolbar buttons
@@ -71,7 +74,9 @@ function init() {
 	.button()
 	.click(function() {
         var filesToUpload = $("#upload-files")[0].files;
-        fileUploader.upload($("#albumname").html(), filesToUpload);
+        var imgFiles = fileUploader.filterImages(filesToUpload);
+        createUploadFileList(imgFiles);
+        fileUploader.upload($("#albumname").html(), imgFiles);
 	});
 
     // Initialize tooltips
@@ -363,4 +368,31 @@ function showUpload(albumName) {
 
 function showUploadSidebar(albumName) {
 
+}
+
+function createUploadFileList(imgFiles) {
+    var template = $("#uploadFileListTemplate").html();
+
+    var output = Mustache.render(template, { imgFiles: imgFiles });
+
+    $('#tblFileList > tbody').html(output);
+
+    // create progress bars
+    $('.uploadprogress').progressbar();
+}
+
+function onStartResize(idx) {
+    $('#tblFileList > tbody > tr').eq(idx).find('.fa-cog').show();
+    console.log('Start resize '+idx);
+}
+
+function onEndResize(idx) {
+    $('#tblFileList > tbody > tr').eq(idx).find('.fa-cog').hide();
+    $('#tblFileList > tbody > tr').eq(idx).find('.fa-check-circle').show();
+    console.log('End resize '+idx);
+}
+
+function onUploadProgress(idx, pct) {
+    $('#tblFileList > tbody > tr').eq(idx).find('.uploadprogress').progressbar('value', pct);
+    console.log('Image '+idx+' Percent done: '+pct);
 }

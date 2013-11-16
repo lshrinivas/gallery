@@ -2,9 +2,12 @@ function FileUploader(options) {
     options = options || {};
     this.url = options.url || 'picuploader.php';
     this.dropZone = options.dropZone;
+    this.startResize = options.startResize;
+    this.endResize = options.endResize;
+    this.uploadProgress = options.uploadProgress;
 }
 
-FileUploader.prototype.upload = function(albumName, files) {
+FileUploader.prototype.filterImages = function(files) {
 
     var images = [];
     // pick out image files from list
@@ -14,25 +17,32 @@ FileUploader.prototype.upload = function(albumName, files) {
         };
     }
 
-    console.log('Image files:');
-    console.log(images);
-    this.resizeImagesAndSend(albumName, images);
+    return images;
 }
 
-FileUploader.prototype.resizeImagesAndSend = function(albumName, images) {
+FileUploader.prototype.upload = function(albumName, images) {
 
     var newCanvas = $('<canvas/>');
     newCanvas[0].height = 1000;
     newCanvas[0].width = 1000;
     var ctx = newCanvas[0].getContext('2d');
 
+    var startResizeCallback = this.startResize;
+    var endResizeCallback = this.endResize;
+
     var self = this;
-    for (i=0; i<images.length; i++) {
+    for (var i=0; i<images.length; i++) {
         var img = new Image();
         var imgName = images[i].name;
 
+        // if start resize callback is registered, call it with the current image
+        // index (i.e., i)
+        if (startResizeCallback && (typeof startResizeCallback === 'function')) {
+            startResizeCallback(i);
+        }
+
         // need an IIFE to bind local vars, since we're inside a loop
-        EXIF.getData(images[i], (function(imgName, albumName, img) {
+        EXIF.getData(images[i], (function(imgName, albumName, img, imgIdx) {
 
             return function() {
                 var orientation = EXIF.getTag(this, "Orientation");
@@ -89,20 +99,26 @@ FileUploader.prototype.resizeImagesAndSend = function(albumName, images) {
                         ctx.restore();
                     }
 
+                    // call end resize callback with image index
+                    if (endResizeCallback && (typeof endResizeCallback === 'function')) {
+                        endResizeCallback(imgIdx);
+                    }
+
                     var rawData = dataURLtoBlob(dataURL);
-                    self.sendFile(albumName, imgName, rawData);
+                    self.sendFile(albumName, imgName, imgIdx, rawData);
                 }
             }
-        })(imgName, albumName, img));
+        })(imgName, albumName, img, i));
     }
 }
 
-FileUploader.prototype.sendFile = function(albumName, imgName, rawData) {
+FileUploader.prototype.sendFile = function(albumName, imgName, imgIdx, rawData) {
     var fd = new FormData();
     fd.append('albumName', albumName);
     fd.append('fileName', imgName);
     fd.append('file', rawData);
 
+    var progressCallback = this.uploadProgress;
     $.ajax({
         url: this.url,
         type: 'POST',
@@ -111,8 +127,10 @@ FileUploader.prototype.sendFile = function(albumName, imgName, rawData) {
             if (xhr.upload) {
                 xhr.upload.addEventListener('progress', function(event) {
                     if (event.lengthComputable) {
-                        var percentComplete = event.loaded / event.total;
-                        console.log(percentComplete);
+                        var percentComplete = 100 * (event.loaded / event.total);
+                        if (progressCallback && (typeof progressCallback === 'function')) {
+                            progressCallback(imgIdx, percentComplete);
+                        }
                     }
                 }, false);
             }

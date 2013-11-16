@@ -69,3 +69,22 @@ table {
     -webkit-box-shadow: 0px 0px 10px 5px #fff;
     box-shadow: 0px 0px 10px 5px #fff;
 }
+
+#tblFileList {
+    width: 100%;
+
+}
+
+th.name, td.name {
+    width: 50%;
+}
+
+th.resizing, td.resizing {
+    width: 10%;
+    text-align: center;
+}
+
+th.uploading, td.uploading {
+    width: 40%;
+}
+
