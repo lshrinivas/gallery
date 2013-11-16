@@ -61,4 +61,13 @@ class PhotoSummaryRO extends BaseRO
     public $usedSpace = 0;
 }
 
+class UploadedPhotoRO
+{
+    public $imageUrl;
+
+    function __construct($url) {
+        $this->imageUrl = $url;
+    }
+}
+
 ?>

@@ -22,6 +22,8 @@ if (isset($_POST["logout"]) && $_POST["logout"] == "true") {
     <script src="jqui/jquery-1.9.0.js"></script>
     <script src="jqui/ui/jquery-ui.js"></script>
     <script src="scripts/mustache.js"></script>
+    <script src="scripts/binaryajax.js"></script>
+    <script src="scripts/exif.js"></script>
     <script src="scripts/fileuploader.js"></script>
     <script src="scripts/admin.js"></script>
   </head>

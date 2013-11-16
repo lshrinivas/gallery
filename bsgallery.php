@@ -162,6 +162,7 @@ function dispatch($method, $data) {
         $ro = new BaseRO(); 
         $ro->success = false;
         $ro->retcode = 3;
+        return $ro;
     }
 }
 
@@ -185,8 +186,7 @@ $data = $_POST["args"];
 
 // error_log(print_r($data, TRUE));
 
-// Dispath the method
-// $ro = dispatch($method, $data);
+// Dispatch the method
 $ro = dispatch($method, $data);
 
 echo json_encode($ro);

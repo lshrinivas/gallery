@@ -36,7 +36,7 @@ function init() {
     // Initialize the File Upload widget:
     var fileUploader = new FileUploader({
         url: 'picuploader.php',
-	dropZone: $("#dropbox")
+        dropZone: $("#dropbox")
     });
 
     // Init toolbar buttons
@@ -70,8 +70,8 @@ function init() {
     $("#do-upload")
 	.button()
 	.click(function() {
-	    var filesToUpload = document.getElementById("upload-files").files;
-	    fileUploader.upload(filesToUpload);
+        var filesToUpload = $("#upload-files")[0].files;
+        fileUploader.upload($("#albumname").html(), filesToUpload);
 	});
 
     // Initialize tooltips
