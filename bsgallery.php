@@ -145,6 +145,30 @@ function publicLink($inputArr) {
     return $ro;
 }
 
+/*
+   Input: Array with properties "albumName" and "picurls"
+   Output: BaseRO object
+*/
+function deletePhotos($inputArr) {
+    $ro = new BaseRO();
+    $album = $inputArr["albumName"];
+    $filesToDel = $inputArr["picurls"];
+    $numfiles = count($filesToDel);
+
+    for ($i=0; $i < $numfiles; $i++)
+    {
+        $ro->success = unlink($filesToDel[$i]);
+        $ro->retmsg = "Deleted " . $filesToDel[$i];
+        if (!($ro->success)) {
+            $ro->retcode = 4;
+            $ro->retmsg = "Couldn't delete files";
+            return $ro;
+        }
+    }
+
+    return $ro;
+}
+
 ///////// Dispatcher ///////
 function dispatch($method, $data) {
 
@@ -154,7 +178,8 @@ function dispatch($method, $data) {
                         "publicLink",
                         "albumSummary",
                         "getPhotos",
-                        "photoSummary");
+                        "photoSummary",
+                        "deletePhotos");
 
     if (in_array($method, $validFuncs)) {
         return call_user_func($method, $data);

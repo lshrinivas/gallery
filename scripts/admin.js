@@ -308,19 +308,19 @@ function publicLink(a_name) {
 
     performRPC("publicLink", { name: a_name }, function(publicLinkRO) {
 
-	if (publicLinkRO.success) {
-	    var cur_url = window.location.href;
-	    var final_url = cur_url.replace("admin.php", publicLinkRO.url);
+    if (publicLinkRO.success) {
+        var cur_url = window.location.href;
+        var final_url = cur_url.replace("admin.php", publicLinkRO.url);
 	    
-	    dialog("Public Link", final_url);
-	} else { 
-	    // handle session expired
-	    if (publicLinkRO.retcode == 1) 
-		sessionExpired();
-	    else
-		// show error
-		dialog("Error!", "Couldn't get public link for album");
-	}
+        dialog("Public Link", final_url);
+    } else {
+        // handle session expired
+        if (publicLinkRO.retcode == 1)
+        sessionExpired();
+        else
+        // show error
+        dialog("Error!", "Couldn't get public link for album");
+    }
     });
 }
 
@@ -332,12 +332,10 @@ function deletePhotos() {
 	picURLs.push($(this).attr("src"));
     });
 
-    $.post("picuploader.php", 
-	   { _method : "DELETE", albumName: album, picurls: picURLs }, 
-	   function() {
-	       photoView(album);
-	   });
-    
+    performRPC("deletePhotos", { albumName: album, picurls: picURLs}, function(baseRO) {
+        console.log(baseRO);
+        photoView(album);
+    });
 }
 
 /////////////// Upload View Functions //////////////
